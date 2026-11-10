@@ -61,15 +61,28 @@ Tailored specifically for students preparing on Android smartphones for competit
 4. (Optional) Run [`supabase/seed.sql`](supabase/seed.sql) to populate initial starter courses and announcements.
 
 ### 3. Configure Environment Variables
-1. In your Supabase Dashboard, go to **Project Settings** > **API**.
-2. Find the **Project URL** and the **anon public** API key.
-3. Under **Project Settings** > **API**, also copy the **service_role secret** key (keep this secret).
+1. In your Supabase Dashboard, go to **Project Settings** > **API Keys** (or **API**).
+2. Supabase uses new **opaque API keys**:
+   - **Publishable Key (`sb_publishable_...`):** Safe for browser/client-side access (replaces the legacy `anon` key).
+   - **Secret Key (`sb_secret_...`):** Strictly for backend/server access (replaces the legacy `service_role` key).
+3. Copy your **Project URL**, your **Publishable Key**, and your **Secret Key**.
 4. In your project root, create a file named `.env.local` based on `.env.example`:
 
 ```env
+# Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+
+# Supabase Publishable Key (sb_publishable_..., client-safe)
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your_key_here
+
+# Supabase Secret Key (sb_secret_..., server-only)
+SUPABASE_SECRET_KEY=sb_secret_your_key_here
+
+# (Optional: Legacy anon and service_role keys are also supported for backward compatibility)
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+
+# Application Base URL
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 

@@ -4,7 +4,11 @@ import { Database } from '@/types/database.types';
 
 export function createClient(): SupabaseClient<Database> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  // Supports new Supabase Publishable Key (sb_publishable_...) with fallback to legacy anon key
+  const publishableKey =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    '';
 
-  return createBrowserClient(supabaseUrl, supabaseAnonKey) as unknown as SupabaseClient<Database>;
+  return createBrowserClient(supabaseUrl, publishableKey) as unknown as SupabaseClient<Database>;
 }

@@ -11,7 +11,11 @@ export async function updateSession(request: NextRequest) {
   });
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  // Supports new Supabase Publishable Key (sb_publishable_...) with fallback to legacy anon key
+  const publishableKey =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    '';
 
   // If supabase is not configured yet (e.g. initial setup preview), allow navigation
   if (!supabaseUrl || supabaseUrl.includes('placeholder')) {
@@ -20,7 +24,7 @@ export async function updateSession(request: NextRequest) {
 
   const supabase = createServerClient(
     supabaseUrl,
-    supabaseAnonKey,
+    publishableKey,
     {
       cookies: {
         get(name: string) {
