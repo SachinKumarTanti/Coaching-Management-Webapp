@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <rect width="512" height="512" rx="100" fill="#1e3a8a"/>
+  <!-- Decorative border ring -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#f59e0b" stroke-width="12" stroke-dasharray="8 8" opacity="0.4"/>
+  <!-- Inner circular badge -->
+  <circle cx="256" cy="256" r="190" fill="#172554"/>
+  <!-- Graduation Cap Icon -->
+  <path d="M256 140L390 205L256 270L122 205Z" fill="#f59e0b"/>
+  <path d="M165 228V295C165 330 205 360 256 360C307 360 347 330 347 295V228L256 272Z" fill="#fbbf24"/>
+  <path d="M375 220V300" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="375" cy="308" r="10" fill="#f59e0b"/>
+  <!-- Text Brand Monogram -->
+  <text x="256" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="44" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="4">LAXMI</text>
+  <text x="256" y="455" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#f59e0b" text-anchor="middle" letter-spacing="3">SANGRAMPUR</text>
+</svg>
