@@ -18,20 +18,59 @@ export function Navbar() {
 
   React.useEffect(() => {
     const supabase = createClient();
+
+    // Check client storage cache for instantaneous display
+    try {
+      const cachedRole = sessionStorage.getItem("lcc_user_role") as UserRole | null;
+      if (cachedRole) {
+        setUserRole(cachedRole);
+      }
+    } catch {
+      // Ignore storage restrictions
+    }
+
     async function checkAuth() {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
           setUser({ id: session.user.id, email: session.user.email });
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("role")
-            .eq("id", session.user.id)
-            .single();
-          setUserRole(profile?.role || "student");
+          
+          // Check cached role first
+          let role: UserRole = "student";
+          try {
+            const cached = sessionStorage.getItem("lcc_user_role") as UserRole | null;
+            if (cached) {
+              role = cached;
+            }
+          } catch {
+            //
+          }
+
+          // If not cached, fetch once and cache in sessionStorage
+          if (!sessionStorage.getItem("lcc_user_role")) {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("role")
+              .eq("id", session.user.id)
+              .single();
+            if (profile?.role) {
+              role = profile.role;
+              try {
+                sessionStorage.setItem("lcc_user_role", role);
+              } catch {
+                //
+              }
+            }
+          }
+          setUserRole(role);
         } else {
           setUser(null);
           setUserRole(null);
+          try {
+            sessionStorage.removeItem("lcc_user_role");
+          } catch {
+            //
+          }
         }
       } catch {
         // Fallback for offline / placeholder
@@ -46,15 +85,26 @@ export function Navbar() {
       async (event, session) => {
         if (session?.user) {
           setUser({ id: session.user.id, email: session.user.email });
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("role")
-            .eq("id", session.user.id)
-            .single();
-          setUserRole(profile?.role || "student");
+          try {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("role")
+              .eq("id", session.user.id)
+              .single();
+            const role = profile?.role || "student";
+            setUserRole(role);
+            sessionStorage.setItem("lcc_user_role", role);
+          } catch {
+            //
+          }
         } else {
           setUser(null);
           setUserRole(null);
+          try {
+            sessionStorage.removeItem("lcc_user_role");
+          } catch {
+            //
+          }
         }
       }
     );
@@ -65,6 +115,11 @@ export function Navbar() {
   }, []);
 
   const handleLogout = async () => {
+    try {
+      sessionStorage.removeItem("lcc_user_role");
+    } catch {
+      //
+    }
     const supabase = createClient();
     await supabase.auth.signOut();
     setUser(null);
@@ -121,10 +176,10 @@ export function Navbar() {
         </nav>
 
         {/* Desktop Auth CTAs */}
-        <div className="hidden md:flex items-center space-x-3">
-          {!loading && (
-            <>
-              {user ? (
+        <div className="hidden md:flex items-center space-x-3 min-w-[140px] justify-end">
+          {loading ? (
+            <div className="h-9 w-28 bg-slate-100 rounded-lg animate-pulse" />
+          ) : user ? (
                 <div className="flex items-center space-x-2">
                   {userRole === "admin" && (
                     <Link href="/admin">
@@ -164,8 +219,6 @@ export function Navbar() {
                   </Link>
                 </div>
               )}
-            </>
-          )}
         </div>
 
         {/* Mobile Hamburger Toggle Button */}

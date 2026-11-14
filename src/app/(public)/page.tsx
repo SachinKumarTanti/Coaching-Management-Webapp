@@ -14,8 +14,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
+
+// Enable Incremental Static Regeneration (ISR) - cached at the Edge and refreshed every 60s
+export const revalidate = 60;
 
 // Fallback data in case database is freshly created or keys pending
 const fallbackCourses = [
@@ -59,12 +62,12 @@ export default async function HomePage() {
   let announcements = fallbackAnnouncements;
 
   try {
-    const supabase = createClient();
+    const supabase = createPublicClient();
     const [coursesRes, announcementsRes] = await Promise.all([
-      supabase.from("courses").select("*").eq("is_active", true).limit(3),
+      supabase.from("courses").select("id, title, description, category").eq("is_active", true).limit(3),
       supabase
         .from("announcements")
-        .select("*")
+        .select("id, title, content, published_at")
         .eq("is_published", true)
         .order("published_at", { ascending: false })
         .limit(2),

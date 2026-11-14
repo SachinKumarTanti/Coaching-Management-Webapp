@@ -11,14 +11,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getCurrentUser, getCurrentProfile } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
 
 export default async function StudentDashboardPage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   let studentName = "Student";
   let enrolledCourses: any[] = [];
@@ -26,39 +23,47 @@ export default async function StudentDashboardPage() {
   let availableMaterialsCount = 0;
 
   if (user) {
-    // 1. Fetch Profile
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("full_name")
-      .eq("id", user.id)
-      .single();
+    const supabase = createClient();
+
+    // Parallel fetch: profile (cached from layout), enrolled courses, and latest announcements
+    const [profile, enrollmentsRes, announcementsRes] = await Promise.all([
+      getCurrentProfile(user.id),
+      supabase
+        .from("enrollments")
+        .select(`
+          id,
+          created_at,
+          courses (
+            id,
+            title,
+            description,
+            category
+          )
+        `)
+        .eq("student_id", user.id),
+      supabase
+        .from("announcements")
+        .select("id, title, content, published_at")
+        .eq("is_published", true)
+        .order("published_at", { ascending: false })
+        .limit(3),
+    ]);
 
     if (profile?.full_name) {
       studentName = profile.full_name;
     }
 
-    // 2. Fetch Enrolled Courses
-    const { data: enrollments } = await supabase
-      .from("enrollments")
-      .select(`
-        id,
-        created_at,
-        courses (
-          id,
-          title,
-          description,
-          category
-        )
-      `)
-      .eq("student_id", user.id);
-
-    if (enrollments) {
-      enrolledCourses = enrollments
+    if (enrollmentsRes.data) {
+      enrolledCourses = enrollmentsRes.data
         .map((e: any) => e.courses)
         .filter(Boolean);
     }
 
-    // 3. Fetch count of accessible materials
+    if (announcementsRes.data) {
+      recentAnnouncements = announcementsRes.data;
+    }
+
+    // Fetch count of accessible materials only if enrolled
     if (enrolledCourses.length > 0) {
       const courseIds = enrolledCourses.map((c: any) => c.id);
       const { count } = await supabase
@@ -66,18 +71,6 @@ export default async function StudentDashboardPage() {
         .select("id", { count: "exact", head: true })
         .in("course_id", courseIds);
       availableMaterialsCount = count || 0;
-    }
-
-    // 4. Fetch Recent Announcements
-    const { data: announcements } = await supabase
-      .from("announcements")
-      .select("*")
-      .eq("is_published", true)
-      .order("published_at", { ascending: false })
-      .limit(3);
-
-    if (announcements) {
-      recentAnnouncements = announcements;
     }
   }
 

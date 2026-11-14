@@ -10,17 +10,14 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { BottomNav } from "@/components/shared/BottomNav";
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser, getCurrentProfile } from "@/lib/supabase/server";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   // If supabase is not yet connected (e.g. placeholder build), provide fallback
   let profile = {
@@ -29,14 +26,12 @@ export default async function DashboardLayout({
   };
 
   if (user) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("full_name, role")
-      .eq("id", user.id)
-      .single();
-
+    const data = await getCurrentProfile(user.id);
     if (data) {
-      profile = data;
+      profile = {
+        full_name: data.full_name,
+        role: data.role,
+      };
     }
   }
 
@@ -102,15 +97,13 @@ export default async function DashboardLayout({
               </p>
               <p className="text-xs text-slate-500 capitalize">{profile.role}</p>
             </div>
-            <form action="/auth/callback" method="GET">
-              <Link
-                href="/"
-                className="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-white transition-colors"
-                title="Go to Website"
-              >
-                <Home className="h-4 w-4" />
-              </Link>
-            </form>
+            <Link
+              href="/"
+              className="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-white transition-colors"
+              title="Go to Website"
+            >
+              <Home className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </aside>

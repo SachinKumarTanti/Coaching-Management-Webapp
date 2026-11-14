@@ -1,7 +1,9 @@
 import { Bell, Calendar, Pin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
+
+export const revalidate = 60;
 
 const defaultAnnouncements = [
   {
@@ -28,10 +30,10 @@ export default async function AnnouncementsPage() {
   let announcements = defaultAnnouncements;
 
   try {
-    const supabase = createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("announcements")
-      .select("*")
+      .select("id, title, content, published_at")
       .eq("is_published", true)
       .order("published_at", { ascending: false });
 

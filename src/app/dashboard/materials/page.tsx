@@ -11,7 +11,7 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getCurrentUser } from "@/lib/supabase/server";
 import { formatDate, formatFileSize } from "@/lib/utils";
 
 interface MaterialsPageProps {
@@ -21,10 +21,8 @@ interface MaterialsPageProps {
 }
 
 export default async function StudentMaterialsPage({ searchParams }: MaterialsPageProps) {
+  const user = await getCurrentUser();
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
   let materials: any[] = [];
   let enrolledCourses: any[] = [];

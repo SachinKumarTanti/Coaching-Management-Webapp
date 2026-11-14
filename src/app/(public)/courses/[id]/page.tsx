@@ -4,7 +4,25 @@ import { ArrowLeft, CheckCircle2, Clock, Calendar, Users, PhoneCall, BookOpen } 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
+
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  try {
+    const supabase = createPublicClient();
+    const { data: courses } = await supabase
+      .from("courses")
+      .select("id")
+      .eq("is_active", true);
+
+    return (courses || []).map((course) => ({
+      id: course.id,
+    }));
+  } catch {
+    return [];
+  }
+}
 
 interface CoursePageProps {
   params: {
@@ -16,10 +34,10 @@ export default async function CourseDetailPage({ params }: CoursePageProps) {
   let course: any = null;
 
   try {
-    const supabase = createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("courses")
-      .select("*")
+      .select("id, title, description, category, is_active")
       .eq("id", params.id)
       .single();
 

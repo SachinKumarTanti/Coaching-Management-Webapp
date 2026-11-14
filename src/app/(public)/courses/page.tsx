@@ -3,7 +3,9 @@ import { BookOpen, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
+
+export const revalidate = 60;
 
 const defaultCourses = [
   {
@@ -40,10 +42,10 @@ export default async function CoursesPage() {
   let courses = defaultCourses;
 
   try {
-    const supabase = createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("courses")
-      .select("*")
+      .select("id, title, description, category, is_active")
       .eq("is_active", true)
       .order("created_at", { ascending: false });
 

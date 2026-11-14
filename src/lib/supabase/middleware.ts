@@ -22,6 +22,30 @@ export async function updateSession(request: NextRequest) {
     return response;
   }
 
+  const path = request.nextUrl.pathname;
+
+  // FAST PATH OPTIMIZATION:
+  // Supabase SSR stores auth tokens in cookies with "sb-" prefix and "-auth-token" suffix.
+  // If no auth cookie exists, we can immediately handle public & protected routes
+  // without paying the 150-400ms external network call penalty to Supabase Auth API.
+  const hasAuthCookie = request.cookies.getAll().some(
+    (cookie) => cookie.name.includes('-auth-token') || cookie.name.startsWith('sb-')
+  );
+
+  if (!hasAuthCookie) {
+    // 1. Unauthenticated users trying to access protected routes -> redirect immediately
+    if (path.startsWith('/admin') || path.startsWith('/dashboard')) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/login';
+      url.searchParams.set('redirectTo', path);
+      return NextResponse.redirect(url);
+    }
+
+    // 2. Public and unauthenticated auth routes -> proceed with 0ms network latency
+    return response;
+  }
+
+  // User has auth cookies: Initialize SSR client to validate / refresh session
   const supabase = createServerClient(
     supabaseUrl,
     publishableKey,
@@ -70,17 +94,19 @@ export async function updateSession(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  const path = request.nextUrl.pathname;
-
-  // Protect Admin routes
-  if (path.startsWith('/admin')) {
-    if (!user) {
+  // If cookie was expired/invalidated
+  if (!user) {
+    if (path.startsWith('/admin') || path.startsWith('/dashboard')) {
       const url = request.nextUrl.clone();
       url.pathname = '/login';
       url.searchParams.set('redirectTo', path);
       return NextResponse.redirect(url);
     }
+    return response;
+  }
 
+  // Protect Admin routes
+  if (path.startsWith('/admin')) {
     // Check admin role
     const { data: profile } = await supabase
       .from('profiles')
@@ -95,18 +121,8 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  // Protect Student Dashboard routes
-  if (path.startsWith('/dashboard')) {
-    if (!user) {
-      const url = request.nextUrl.clone();
-      url.pathname = '/login';
-      url.searchParams.set('redirectTo', path);
-      return NextResponse.redirect(url);
-    }
-  }
-
   // Redirect logged-in users away from auth pages
-  if (user && (path === '/login' || path === '/register')) {
+  if (path === '/login' || path === '/register') {
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')

@@ -10,29 +10,21 @@ import {
   GraduationCap,
   ArrowLeft,
 } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser, getCurrentProfile } from "@/lib/supabase/server";
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   let adminName = "Vishal Sir / Admin";
 
   if (user) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("full_name")
-      .eq("id", user.id)
-      .single();
-
-    if (data?.full_name) {
-      adminName = data.full_name;
+    const profile = await getCurrentProfile(user.id);
+    if (profile?.full_name) {
+      adminName = profile.full_name;
     }
   }
 

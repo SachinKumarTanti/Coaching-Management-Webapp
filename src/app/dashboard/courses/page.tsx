@@ -3,18 +3,16 @@ import { BookOpen, FileText, ArrowRight, Calendar, AlertCircle } from "lucide-re
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getCurrentUser } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
 
 export default async function StudentCoursesPage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   let enrolledCourses: any[] = [];
 
   if (user) {
+    const supabase = createClient();
     const { data } = await supabase
       .from("enrollments")
       .select(`
