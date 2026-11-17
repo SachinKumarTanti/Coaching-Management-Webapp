@@ -1,12 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { MapPin, Phone, Mail, MessageCircle, Clock, Send, CheckCircle2 } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  MessageCircle,
+  Clock,
+  Send,
+  CheckCircle2,
+  Facebook,
+  Instagram,
+  Youtube,
+  ExternalLink,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { CONTACT_INFO } from "@/lib/constants";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = React.useState(false);
@@ -17,18 +30,10 @@ export default function ContactPage() {
     message: "",
   });
 
-  const contactConfig = {
-    centerName: "Laxmi Competition Classes",
-    director: "Vishal Sir",
-    address: "Main Market Road, Near Gandhi Chowk, Sangrampur, Bihar - 813212",
-    phone: "+91 98765 43210",
-    email: "contact@laxmiclasses.com",
-    whatsappNumber: "919876543210",
-    timings: "Monday – Saturday: 6:30 AM to 6:30 PM (Sunday: 8:00 AM – 1:00 PM)",
-  };
-
   const whatsappMessage = encodeURIComponent(
-    `Hello Vishal Sir, my name is ${formData.name || "[Name]"}. I am preparing for ${formData.targetExam || "competitive exams"} and would like information about admissions at Laxmi Competition Classes, Sangrampur.`
+    `Hello Vishal Sir, my name is ${formData.name || "[Name]"}. I am preparing for ${
+      formData.targetExam || "competitive exams"
+    } and would like information about admissions at Laxmi Competition Classes, Sangrampur.`
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -37,7 +42,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
+    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
       {/* Header */}
       <section className="bg-slate-900 text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
         <div className="max-w-4xl mx-auto text-center space-y-3">
@@ -57,72 +62,78 @@ export default function ContactPage() {
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            {/* Center Information */}
+            {/* Center Information & Socials */}
             <div className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Coaching Center Details</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-5 text-sm text-slate-700">
+                <CardContent className="space-y-5 text-sm text-slate-700 dark:text-slate-300">
                   <div className="flex items-start space-x-3">
-                    <div className="w-9 h-9 rounded-lg bg-blue-100 text-primary flex items-center justify-center flex-shrink-0">
+                    <div className="w-9 h-9 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-primary dark:text-blue-300 flex items-center justify-center flex-shrink-0">
                       <MapPin className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="font-bold text-slate-900 block">Center Address</span>
-                      <p className="text-slate-600 mt-0.5">{contactConfig.address}</p>
+                      <span className="font-bold text-slate-900 dark:text-white block">Center Address</span>
+                      <p className="text-slate-600 dark:text-slate-400 mt-0.5">{CONTACT_INFO.address}</p>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-3">
-                    <div className="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0">
+                    <div className="w-9 h-9 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 flex items-center justify-center flex-shrink-0">
                       <Phone className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="font-bold text-slate-900 block">Direct Inquiry Phone</span>
-                      <a href={`tel:${contactConfig.phone}`} className="text-primary hover:underline font-medium">
-                        {contactConfig.phone}
+                      <span className="font-bold text-slate-900 dark:text-white block">Direct Inquiry Phone</span>
+                      <a
+                        href={CONTACT_INFO.phoneHref}
+                        className="text-primary dark:text-accent hover:underline font-medium"
+                      >
+                        {CONTACT_INFO.phoneDisplay}
                       </a>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-3">
-                    <div className="w-9 h-9 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center flex-shrink-0">
+                    <div className="w-9 h-9 rounded-lg bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 flex items-center justify-center flex-shrink-0">
                       <Mail className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="font-bold text-slate-900 block">Email Address</span>
-                      <a href={`mailto:${contactConfig.email}`} className="text-primary hover:underline">
-                        {contactConfig.email}
+                      <span className="font-bold text-slate-900 dark:text-white block">Email Address</span>
+                      <a
+                        href={CONTACT_INFO.emailHref}
+                        className="text-primary dark:text-accent hover:underline"
+                      >
+                        {CONTACT_INFO.email}
                       </a>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-3">
-                    <div className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                    <div className="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center flex-shrink-0">
                       <Clock className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="font-bold text-slate-900 block">Center Timings</span>
-                      <p className="text-slate-600 mt-0.5">{contactConfig.timings}</p>
+                      <span className="font-bold text-slate-900 dark:text-white block">Center Timings</span>
+                      <p className="text-slate-600 dark:text-slate-400 mt-0.5">{CONTACT_INFO.timings}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Direct WhatsApp Callout */}
-              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 rounded-2xl p-6 text-emerald-950 dark:text-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="space-y-1 text-center sm:text-left">
-                  <h4 className="font-bold text-emerald-900 flex items-center justify-center sm:justify-start gap-2">
-                    <MessageCircle className="h-5 w-5 text-emerald-600" />
+                  <h4 className="font-bold text-emerald-900 dark:text-emerald-100 flex items-center justify-center sm:justify-start gap-2">
+                    <MessageCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                     Instant WhatsApp Support
                   </h4>
-                  <p className="text-xs text-emerald-800 leading-relaxed">
-                    Message directly on WhatsApp for quick batch schedule and admission queries.
+                  <p className="text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed">
+                    Chat directly with Vishal Sir on {CONTACT_INFO.phoneDisplay} for batch schedules, fee inquiries, and seat availability.
                   </p>
                 </div>
                 <a
-                  href={`https://wa.me/${contactConfig.whatsappNumber}?text=${encodeURIComponent(
+                  href={`${CONTACT_INFO.whatsappHref}?text=${encodeURIComponent(
                     "Hello Vishal Sir, I want to inquire about batches at Laxmi Competition Classes Sangrampur."
                   )}`}
                   target="_blank"
@@ -135,6 +146,83 @@ export default function ContactPage() {
                   </Button>
                 </a>
               </div>
+
+              {/* Official Social Media Channels */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Connect with Vishal Sir Online</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Follow official video lectures, exam analysis, and daily updates directly on Vishal Sir&apos;s channels:
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                    {/* YouTube */}
+                    <a
+                      href={CONTACT_INFO.socials.youtube.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-red-500/50 hover:bg-red-50/50 dark:hover:bg-red-950/20 transition-all group"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-950/60 text-red-600 flex items-center justify-center flex-shrink-0">
+                        <Youtube className="h-4 w-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-bold text-slate-900 dark:text-white truncate group-hover:text-red-600 dark:group-hover:text-red-400">
+                          YouTube
+                        </p>
+                        <p className="text-[11px] text-slate-500 truncate">
+                          {CONTACT_INFO.socials.youtube.username}
+                        </p>
+                      </div>
+                      <ExternalLink className="h-3.5 w-3.5 text-slate-400 group-hover:text-red-500 flex-shrink-0" />
+                    </a>
+
+                    {/* Facebook */}
+                    <a
+                      href={CONTACT_INFO.socials.facebook.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500/50 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-all group"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center flex-shrink-0">
+                        <Facebook className="h-4 w-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-bold text-slate-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                          Facebook
+                        </p>
+                        <p className="text-[11px] text-slate-500 truncate">
+                          {CONTACT_INFO.socials.facebook.username}
+                        </p>
+                      </div>
+                      <ExternalLink className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-500 flex-shrink-0" />
+                    </a>
+
+                    {/* Instagram */}
+                    <a
+                      href={CONTACT_INFO.socials.instagram.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-pink-500/50 hover:bg-pink-50/50 dark:hover:bg-pink-950/20 transition-all group"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-pink-100 dark:bg-pink-950/60 text-pink-600 flex items-center justify-center flex-shrink-0">
+                        <Instagram className="h-4 w-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-bold text-slate-900 dark:text-white truncate group-hover:text-pink-600 dark:group-hover:text-pink-400">
+                          Instagram
+                        </p>
+                        <p className="text-[11px] text-slate-500 truncate">
+                          {CONTACT_INFO.socials.instagram.username}
+                        </p>
+                      </div>
+                      <ExternalLink className="h-3.5 w-3.5 text-slate-400 group-hover:text-pink-500 flex-shrink-0" />
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Quick Inquiry Form */}
@@ -148,8 +236,8 @@ export default function ContactPage() {
                     <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
                       <CheckCircle2 className="h-6 w-6" />
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900">Inquiry Received!</h3>
-                    <p className="text-sm text-slate-600 max-w-sm mx-auto leading-relaxed">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">Inquiry Received!</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 max-w-sm mx-auto leading-relaxed">
                       Thank you, {formData.name}. Vishal Sir or the center team will respond to your phone number ({formData.phone}) shortly.
                     </p>
                     <div className="pt-3">
@@ -171,7 +259,7 @@ export default function ContactPage() {
                     <Input
                       label="10-Digit Mobile Number"
                       type="tel"
-                      placeholder="e.g. 9876543210"
+                      placeholder="e.g. 9534932440"
                       required
                       pattern="[0-9]{10}"
                       value={formData.phone}
@@ -199,12 +287,16 @@ export default function ContactPage() {
                         Submit Inquiry
                       </Button>
                       <a
-                        href={`https://wa.me/${contactConfig.whatsappNumber}?text=${whatsappMessage}`}
+                        href={`${CONTACT_INFO.whatsappHref}?text=${whatsappMessage}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full sm:w-auto"
                       >
-                        <Button type="button" variant="outline" className="w-full border-emerald-600 text-emerald-700 hover:bg-emerald-50 gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-full border-emerald-600 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 gap-2"
+                        >
                           <MessageCircle className="h-4 w-4" />
                           Send via WhatsApp
                         </Button>

@@ -36,7 +36,7 @@ export function BottomNav() {
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200 px-2 py-1 shadow-lg safe-bottom">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-t border-slate-200 dark:border-slate-800 px-2 py-1 shadow-lg safe-bottom transition-colors">
       <div className="grid grid-cols-4 items-center">
         {navItems.map((item) => {
           const isActive = item.exact
@@ -51,8 +51,8 @@ export function BottomNav() {
               className={cn(
                 "flex flex-col items-center justify-center py-1.5 px-1 rounded-lg text-xs font-medium transition-colors min-h-[50px]",
                 isActive
-                  ? "text-primary font-bold"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "text-primary dark:text-accent font-bold"
+                  : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               )}
             >
               <Icon className={cn("h-5 w-5 mb-0.5", isActive ? "stroke-[2.5]" : "stroke-[1.75]")} />

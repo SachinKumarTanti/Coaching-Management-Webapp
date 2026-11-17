@@ -44,18 +44,18 @@ export function Modal({ isOpen, onClose, title, description, children, className
         role="dialog"
         aria-modal="true"
         className={cn(
-          "relative z-50 w-full max-w-lg bg-white rounded-t-2xl sm:rounded-xl shadow-2xl border border-slate-200 p-6 max-h-[90vh] overflow-y-auto",
+          "relative z-50 w-full max-w-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-t-2xl sm:rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 p-6 max-h-[90vh] overflow-y-auto",
           className
         )}
       >
-        <div className="flex items-start justify-between pb-3 border-b border-slate-100">
+        <div className="flex items-start justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
           <div>
-            {title && <h3 className="text-lg font-bold text-slate-900">{title}</h3>}
-            {description && <p className="text-sm text-slate-500 mt-0.5">{description}</p>}
+            {title && <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">{title}</h3>}
+            {description && <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{description}</p>}
           </div>
           <button
             onClick={onClose}
-            className="rounded-full p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="rounded-full p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             aria-label="Close modal"
           >
             <X className="h-5 w-5" />

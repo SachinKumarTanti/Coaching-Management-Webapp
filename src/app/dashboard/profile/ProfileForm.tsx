@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { User, Phone, Mail, Lock, CheckCircle2, AlertCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { User, Phone, Mail, Lock, CheckCircle2, AlertCircle, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -21,8 +22,10 @@ export function ProfileForm({
   initialPhone,
   initialRole,
 }: ProfileFormProps) {
+  const router = useRouter();
   const [updating, setUpdating] = React.useState(false);
   const [updatingPassword, setUpdatingPassword] = React.useState(false);
+  const [loggingOut, setLoggingOut] = React.useState(false);
 
   const [email] = React.useState(initialEmail);
   const [role] = React.useState(initialRole);
@@ -102,6 +105,23 @@ export function ProfileForm({
     }
   };
 
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      try {
+        sessionStorage.removeItem("lcc_user_role");
+      } catch {
+        // Ignore
+      }
+      router.push("/login");
+      router.refresh();
+    } catch {
+      setLoggingOut(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Basic Profile Details */}
@@ -157,7 +177,7 @@ export function ProfileForm({
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               pattern="[0-9]{10}"
-              placeholder="9876543210"
+              placeholder="e.g. 9534932440"
               helperText="Used for batch reminders and SMS updates"
             />
 
@@ -226,6 +246,43 @@ export function ProfileForm({
               </Button>
             </div>
           </form>
+        </CardContent>
+      </Card>
+
+      {/* Account Session & Logout */}
+      <Card className="border-rose-200 dark:border-rose-900/40 bg-rose-50/30 dark:bg-rose-950/20">
+        <CardHeader>
+          <div className="flex items-center space-x-2 text-rose-700 dark:text-rose-400">
+            <LogOut className="h-5 w-5" />
+            <CardTitle className="text-lg text-rose-900 dark:text-rose-200">
+              Account Session & Sign Out
+            </CardTitle>
+          </div>
+          <CardDescription className="text-rose-700/80 dark:text-rose-400/80">
+            Sign out of your student account on this device.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                Currently logged in as <span className="font-bold text-slate-900 dark:text-white">{email}</span>
+              </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Your enrollments and saved notes will remain safe in your account.
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleLogout}
+              isLoading={loggingOut}
+              className="gap-2 w-full sm:w-auto shadow-sm"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Log Out</span>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

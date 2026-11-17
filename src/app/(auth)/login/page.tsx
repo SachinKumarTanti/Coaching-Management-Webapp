@@ -62,8 +62,8 @@ function LoginForm() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-1">
-        <h1 className="text-xl font-bold text-slate-900">Student & Admin Login</h1>
-        <p className="text-xs text-slate-500">
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white">Student & Admin Login</h1>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           Enter your registered email and password to access study materials
         </p>
       </div>
@@ -88,12 +88,12 @@ function LoginForm() {
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="block text-sm font-semibold text-slate-800">
+            <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200">
               Password
             </label>
             <Link
               href="/forgot-password"
-              className="text-xs font-medium text-primary hover:underline"
+              className="text-xs font-medium text-primary dark:text-accent hover:underline"
             >
               Forgot password?
             </Link>
@@ -119,9 +119,9 @@ function LoginForm() {
         </Button>
       </form>
 
-      <div className="pt-4 border-t border-slate-100 text-center text-xs text-slate-600">
+      <div className="pt-4 border-t border-slate-100 dark:border-slate-800 text-center text-xs text-slate-600 dark:text-slate-400">
         Don&apos;t have an account yet?{" "}
-        <Link href="/register" className="font-semibold text-primary hover:underline">
+        <Link href="/register" className="font-semibold text-primary dark:text-accent hover:underline">
           Register here
         </Link>
       </div>

@@ -207,6 +207,145 @@ export type Database = {
           }
         ];
       };
+      course_requests: {
+        Row: {
+          id: string;
+          student_id: string;
+          course_id: string;
+          status: 'pending' | 'approved' | 'rejected';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          student_id: string;
+          course_id: string;
+          status?: 'pending' | 'approved' | 'rejected';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          student_id?: string;
+          course_id?: string;
+          status?: 'pending' | 'approved' | 'rejected';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "course_requests_course_id_fkey";
+            columns: ["course_id"];
+            isOneToOne: false;
+            referencedRelation: "courses";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "course_requests_student_id_fkey";
+            columns: ["student_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      reviews: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          author_name: string;
+          author_role: string | null;
+          rating: number;
+          content: string;
+          is_published: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          author_name: string;
+          author_role?: string | null;
+          rating: number;
+          content: string;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string | null;
+          author_name?: string;
+          author_role?: string | null;
+          rating?: number;
+          content?: string;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reviews_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      bug_reports: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          title: string;
+          description: string;
+          category: 'ui' | 'auth' | 'courses' | 'materials' | 'performance' | 'other';
+          severity: 'low' | 'medium' | 'high' | 'critical';
+          status: 'open' | 'in_progress' | 'resolved' | 'closed';
+          reporter_name: string | null;
+          reporter_contact: string | null;
+          admin_notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          title: string;
+          description: string;
+          category?: 'ui' | 'auth' | 'courses' | 'materials' | 'performance' | 'other';
+          severity?: 'low' | 'medium' | 'high' | 'critical';
+          status?: 'open' | 'in_progress' | 'resolved' | 'closed';
+          reporter_name?: string | null;
+          reporter_contact?: string | null;
+          admin_notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string | null;
+          title?: string;
+          description?: string;
+          category?: 'ui' | 'auth' | 'courses' | 'materials' | 'performance' | 'other';
+          severity?: 'low' | 'medium' | 'high' | 'critical';
+          status?: 'open' | 'in_progress' | 'resolved' | 'closed';
+          reporter_name?: string | null;
+          reporter_contact?: string | null;
+          admin_notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "bug_reports_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

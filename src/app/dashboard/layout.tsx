@@ -1,15 +1,15 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import {
   GraduationCap,
   Home,
   BookOpen,
   FileText,
   User,
-  LogOut,
   ShieldCheck,
 } from "lucide-react";
 import { BottomNav } from "@/components/shared/BottomNav";
+import { LogoutButton } from "@/components/shared/LogoutButton";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { getCurrentUser, getCurrentProfile } from "@/lib/supabase/server";
 
 export default async function DashboardLayout({
@@ -43,20 +43,23 @@ export default async function DashboardLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col md:flex-row transition-colors">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:w-64 flex-col bg-white border-r border-slate-200">
+      <aside className="hidden md:flex md:w-64 flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800">
         {/* Brand */}
-        <div className="p-6 border-b border-slate-100 flex items-center space-x-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-accent shadow-sm">
-            <GraduationCap className="h-6 w-6" />
+        <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-accent shadow-sm">
+              <GraduationCap className="h-6 w-6" />
+            </div>
+            <div>
+              <h2 className="text-base font-extrabold text-primary dark:text-white leading-tight">
+                Laxmi Classes
+              </h2>
+              <p className="text-xs font-semibold text-accent">Student Portal</p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-base font-extrabold text-primary leading-tight">
-              Laxmi Classes
-            </h2>
-            <p className="text-xs font-semibold text-accent">Student Portal</p>
-          </div>
+          <ThemeToggle />
         </div>
 
         {/* Navigation */}
@@ -67,43 +70,47 @@ export default async function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:text-primary hover:bg-blue-50 transition-colors"
+                className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors"
               >
-                <Icon className="h-5 w-5 text-slate-500" />
+                <Icon className="h-5 w-5 text-slate-500 dark:text-slate-400" />
                 <span>{item.name}</span>
               </Link>
             );
           })}
 
           {profile.role === "admin" && (
-            <div className="pt-4 border-t border-slate-100 mt-4">
+            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 mt-4">
               <Link
                 href="/admin"
-                className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors"
+                className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors"
               >
-                <ShieldCheck className="h-5 w-5 text-indigo-600" />
+                <ShieldCheck className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                 <span>Switch to Admin Panel</span>
               </Link>
             </div>
           )}
+
+          <div className="pt-4 border-t border-slate-100 dark:border-slate-800 mt-4">
+            <Link
+              href="/"
+              className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+            >
+              <Home className="h-4 w-4" />
+              <span>Public Website</span>
+            </Link>
+          </div>
         </div>
 
         {/* User Card & Logout */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50/50">
+        <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
           <div className="flex items-center justify-between">
-            <div className="truncate">
-              <p className="text-sm font-bold text-slate-900 truncate">
+            <div className="truncate pr-2">
+              <p className="text-sm font-bold text-slate-900 dark:text-white truncate">
                 {profile.full_name}
               </p>
-              <p className="text-xs text-slate-500 capitalize">{profile.role}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">{profile.role}</p>
             </div>
-            <Link
-              href="/"
-              className="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-white transition-colors"
-              title="Go to Website"
-            >
-              <Home className="h-4 w-4" />
-            </Link>
+            <LogoutButton />
           </div>
         </div>
       </aside>
@@ -111,28 +118,24 @@ export default async function DashboardLayout({
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-6">
         {/* Mobile Header */}
-        <header className="md:hidden sticky top-0 z-30 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+        <header className="md:hidden sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between shadow-sm">
           <Link href="/" className="flex items-center space-x-2">
             <div className="h-8 w-8 rounded-lg bg-primary text-accent flex items-center justify-center font-bold">
               <GraduationCap className="h-5 w-5" />
             </div>
-            <span className="text-sm font-bold text-primary">Laxmi Classes</span>
+            <span className="text-sm font-bold text-primary dark:text-white">Laxmi Classes</span>
           </Link>
           <div className="flex items-center space-x-2">
+            <ThemeToggle />
             {profile.role === "admin" && (
               <Link
                 href="/admin"
-                className="px-2 py-1 rounded text-xs font-bold bg-indigo-100 text-indigo-700"
+                className="px-2 py-1 rounded text-xs font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
               >
                 Admin
               </Link>
             )}
-            <Link
-              href="/"
-              className="text-xs font-medium text-slate-600 hover:text-primary"
-            >
-              Public Site
-            </Link>
+            <LogoutButton />
           </div>
         </header>
 

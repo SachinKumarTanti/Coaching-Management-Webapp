@@ -30,10 +30,10 @@ export function ConfirmModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
       <div className="flex items-start space-x-3 py-2">
-        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center">
+        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center">
           <AlertTriangle className="h-5 w-5" />
         </div>
-        <div className="flex-1 text-sm text-slate-600 leading-relaxed">
+        <div className="flex-1 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
           {message}
         </div>
       </div>

@@ -57,7 +57,7 @@ export default async function CoursesPage() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors">
       {/* Header */}
       <section className="bg-slate-900 text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
         <div className="max-w-4xl mx-auto text-center space-y-3">
@@ -74,7 +74,7 @@ export default async function CoursesPage() {
       </section>
 
       {/* Courses List */}
-      <section className="py-12 bg-slate-50">
+      <section className="py-12 bg-slate-50 dark:bg-slate-950 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
@@ -94,8 +94,8 @@ export default async function CoursesPage() {
                     {course.description}
                   </CardDescription>
 
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                    <span className="text-xs text-slate-500 font-medium">Sangrampur Center</span>
+                  <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Sangrampur Center</span>
                     <Link href={`/courses/${course.id}`}>
                       <Button variant="outline" size="sm" className="gap-1.5">
                         <span>Details</span>

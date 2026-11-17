@@ -6,11 +6,13 @@ import {
   FileText,
   Users,
   LayoutDashboard,
-  LogOut,
   GraduationCap,
   ArrowLeft,
+  MessageSquare,
 } from "lucide-react";
 import { getCurrentUser, getCurrentProfile } from "@/lib/supabase/server";
+import { AdminBottomNav } from "@/components/admin/AdminBottomNav";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export default async function AdminLayout({
   children,
@@ -34,23 +36,27 @@ export default async function AdminLayout({
     { name: "Announcements", href: "/admin/announcements", icon: Bell },
     { name: "Study Materials", href: "/admin/materials", icon: FileText },
     { name: "Students & Enrollments", href: "/admin/students", icon: Users },
+    { name: "Reviews & Bugs", href: "/admin/feedback", icon: MessageSquare },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col md:flex-row transition-colors">
       {/* Desktop Admin Sidebar */}
-      <aside className="hidden md:flex md:w-64 flex-col bg-slate-900 text-white">
+      <aside className="hidden md:flex md:w-64 flex-col bg-slate-900 dark:bg-slate-950 text-white border-r border-slate-800">
         {/* Brand */}
-        <div className="p-6 border-b border-slate-800 flex items-center space-x-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-slate-950 font-bold shadow">
-            <ShieldCheck className="h-6 w-6" />
+        <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-slate-950 font-bold shadow">
+              <ShieldCheck className="h-6 w-6" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-white leading-tight">
+                Laxmi Classes
+              </h2>
+              <p className="text-xs font-semibold text-accent">Admin Dashboard</p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-base font-bold text-white leading-tight">
-              Laxmi Classes
-            </h2>
-            <p className="text-xs font-semibold text-accent">Admin Dashboard</p>
-          </div>
+          <ThemeToggle className="text-slate-400 hover:text-white hover:bg-slate-800" />
         </div>
 
         {/* Navigation */}
@@ -74,14 +80,14 @@ export default async function AdminLayout({
               href="/dashboard"
               className="flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
             >
-              <GraduationCap className="h-4 w-4" />
+              <GraduationCap className="h-4 w-4 text-blue-400" />
               <span>View as Student</span>
             </Link>
             <Link
               href="/"
               className="flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-4 w-4 text-emerald-400" />
               <span>Public Website</span>
             </Link>
           </div>
@@ -95,41 +101,22 @@ export default async function AdminLayout({
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 pb-16 md:pb-6">
-        {/* Mobile Header & Horizontal Nav */}
-        <header className="md:hidden bg-slate-900 text-white p-4 border-b border-slate-800 sticky top-0 z-30 shadow-md">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-2">
-              <ShieldCheck className="h-6 w-6 text-accent" />
-              <span className="font-extrabold text-sm">LCC Admin Panel</span>
-            </div>
-            <div className="flex items-center space-x-2 text-xs">
-              <Link
-                href="/dashboard"
-                className="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white"
-              >
-                Student View
-              </Link>
-              <Link
-                href="/"
-                className="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white"
-              >
-                Site
-              </Link>
-            </div>
+      <div className="flex-1 flex flex-col min-w-0 pb-24 md:pb-8">
+        {/* Mobile Header (Clean & compact, navigation is now in bottom dock) */}
+        <header className="md:hidden bg-slate-900 text-white px-4 py-3 border-b border-slate-800 sticky top-0 z-30 shadow-md flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <ShieldCheck className="h-6 w-6 text-accent" />
+            <span className="font-extrabold text-sm tracking-tight">LCC Admin</span>
           </div>
 
-          {/* Horizontal scrollable nav for mobile admin */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs font-semibold">
-            {adminNav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 whitespace-nowrap flex-shrink-0"
-              >
-                {item.name}
-              </Link>
-            ))}
+          <div className="flex items-center space-x-2 text-xs">
+            <ThemeToggle className="text-slate-300 hover:text-white" />
+            <Link
+              href="/dashboard"
+              className="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-medium"
+            >
+              Student View
+            </Link>
           </div>
         </header>
 
@@ -138,6 +125,9 @@ export default async function AdminLayout({
           {children}
         </main>
       </div>
+
+      {/* Mobile Admin Bottom Navigation Bar */}
+      <AdminBottomNav adminName={adminName} />
     </div>
   );
 }

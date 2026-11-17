@@ -15,10 +15,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantStyles = {
       primary: "bg-primary text-white hover:bg-primary-hover focus-visible:ring-primary shadow-sm",
-      secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200 focus-visible:ring-slate-400",
-      outline: "border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 focus-visible:ring-slate-400",
+      secondary: "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:ring-slate-400",
+      outline: "border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 focus-visible:ring-slate-400",
       accent: "bg-accent text-slate-950 font-semibold hover:bg-accent-hover focus-visible:ring-accent shadow-sm",
-      ghost: "text-slate-700 hover:bg-slate-100 focus-visible:ring-slate-300",
+      ghost: "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus-visible:ring-slate-300",
       destructive: "bg-rose-600 text-white hover:bg-rose-700 focus-visible:ring-rose-500 shadow-sm",
     };
 

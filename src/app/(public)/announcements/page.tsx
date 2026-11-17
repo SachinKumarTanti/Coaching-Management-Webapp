@@ -45,7 +45,7 @@ export default async function AnnouncementsPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
+    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
       {/* Header */}
       <section className="bg-slate-900 text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
         <div className="max-w-4xl mx-auto text-center space-y-3">
@@ -67,10 +67,10 @@ export default async function AnnouncementsPage() {
           {announcements.map((item, index) => (
             <article
               key={item.id}
-              className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:border-primary/40 transition-all space-y-3"
+              className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm hover:border-primary/40 dark:hover:border-accent/40 transition-all space-y-3"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center space-x-2 text-xs font-semibold text-slate-500">
+                <div className="flex items-center space-x-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
                   <Calendar className="h-4 w-4 text-accent" />
                   <span>{formatDate(item.published_at)}</span>
                 </div>
@@ -81,15 +81,15 @@ export default async function AnnouncementsPage() {
                 )}
               </div>
 
-              <h2 className="text-xl font-bold text-slate-900 leading-snug">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white leading-snug">
                 {item.title}
               </h2>
 
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+              <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
                 {item.content}
               </p>
 
-              <div className="pt-2 flex items-center justify-between text-xs text-slate-400 border-t border-slate-100">
+              <div className="pt-2 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 border-t border-slate-100 dark:border-slate-800">
                 <span>Laxmi Competition Classes • Sangrampur</span>
                 <span>By Vishal Sir</span>
               </div>

@@ -81,7 +81,7 @@ export default function RegisterPage() {
         </div>
         <h2 className="text-xl font-bold text-slate-900">Registration Successful!</h2>
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-          Your account has been created. If your Supabase project requires email verification, please check your inbox to confirm your email. Otherwise, you can log in right away.
+          Your account has been created. please check your inbox/Spam to confirm your email.
         </p>
         <div className="pt-2">
           <Link href="/login">
@@ -97,8 +97,8 @@ export default function RegisterPage() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-1">
-        <h1 className="text-xl font-bold text-slate-900">Create Student Account</h1>
-        <p className="text-xs text-slate-500">
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white">Create Student Account</h1>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           Join Laxmi Competition Classes to access digital notes & enrolled batches
         </p>
       </div>
@@ -170,9 +170,9 @@ export default function RegisterPage() {
         </Button>
       </form>
 
-      <div className="pt-3 border-t border-slate-100 text-center text-xs text-slate-600">
+      <div className="pt-3 border-t border-slate-100 dark:border-slate-800 text-center text-xs text-slate-600 dark:text-slate-400">
         Already registered?{" "}
-        <Link href="/login" className="font-semibold text-primary hover:underline">
+        <Link href="/login" className="font-semibold text-primary dark:text-accent hover:underline">
           Sign In
         </Link>
       </div>

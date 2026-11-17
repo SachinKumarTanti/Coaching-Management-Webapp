@@ -100,42 +100,42 @@ export default async function StudentDashboardPage() {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <Card>
           <CardContent className="p-4 sm:p-6 flex items-center space-x-3 sm:space-x-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-100 text-primary flex items-center justify-center font-bold flex-shrink-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-100 dark:bg-blue-950 text-primary dark:text-blue-300 flex items-center justify-center font-bold flex-shrink-0">
               <BookOpen className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
             <div>
-              <p className="text-xl sm:text-2xl font-black text-slate-900">
+              <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
                 {enrolledCourses.length}
               </p>
-              <p className="text-xs text-slate-500 font-medium">Enrolled Courses</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Enrolled Courses</p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4 sm:p-6 flex items-center space-x-3 sm:space-x-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold flex-shrink-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 flex items-center justify-center font-bold flex-shrink-0">
               <FileText className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
             <div>
-              <p className="text-xl sm:text-2xl font-black text-slate-900">
+              <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
                 {availableMaterialsCount}
               </p>
-              <p className="text-xs text-slate-500 font-medium">Study PDFs</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Study PDFs</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="col-span-2 md:col-span-1">
           <CardContent className="p-4 sm:p-6 flex items-center space-x-3 sm:space-x-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold flex-shrink-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold flex-shrink-0">
               <Bell className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
             <div>
-              <p className="text-xl sm:text-2xl font-black text-slate-900">
+              <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
                 {recentAnnouncements.length}
               </p>
-              <p className="text-xs text-slate-500 font-medium">Recent Notices</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Recent Notices</p>
             </div>
           </CardContent>
         </Card>
@@ -146,13 +146,13 @@ export default async function StudentDashboardPage() {
         {/* Left 2 Cols: Enrolled Courses */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg sm:text-xl font-bold text-slate-900">
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
               My Enrolled Batches
             </h2>
             {enrolledCourses.length > 0 && (
               <Link
                 href="/dashboard/courses"
-                className="text-xs font-semibold text-primary hover:underline"
+                className="text-xs font-semibold text-primary dark:text-blue-400 hover:underline"
               >
                 View all
               </Link>
@@ -164,20 +164,20 @@ export default async function StudentDashboardPage() {
               {enrolledCourses.map((course) => (
                 <div
                   key={course.id}
-                  className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-primary/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm hover:border-primary/40 dark:hover:border-accent/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary">{course.category || "Foundation"}</Badge>
-                      <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
+                      <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
                         <CheckCircle className="h-3 w-3" />
                         Active
                       </span>
                     </div>
-                    <h3 className="text-base font-bold text-slate-900">
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white">
                       {course.title}
                     </h3>
-                    <p className="text-xs text-slate-500 line-clamp-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
                       {course.description}
                     </p>
                   </div>
@@ -191,14 +191,14 @@ export default async function StudentDashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-xl border border-dashed border-slate-300 p-8 text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-blue-50 text-primary mx-auto flex items-center justify-center">
+            <div className="bg-white dark:bg-slate-900 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 p-8 text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-950 text-primary dark:text-blue-300 mx-auto flex items-center justify-center">
                 <BookOpen className="h-6 w-6" />
               </div>
-              <h3 className="text-base font-bold text-slate-900">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">
                 No active course enrollments yet
               </h3>
-              <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
                 When you register for a batch at the Sangrampur center, Vishal Sir or center staff will activate your enrollment here.
               </p>
               <div className="pt-2">
@@ -215,38 +215,38 @@ export default async function StudentDashboardPage() {
         {/* Right 1 Col: Recent Announcements */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg sm:text-xl font-bold text-slate-900">
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
               Notices from Vishal Sir
             </h2>
           </div>
 
-          <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-4">
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
             {recentAnnouncements.length > 0 ? (
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-slate-100 dark:divide-slate-800">
                 {recentAnnouncements.map((item) => (
                   <div key={item.id} className="py-3 first:pt-0 last:pb-0 space-y-1">
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium">
+                    <div className="flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-500 font-medium">
                       <span>Sangrampur Center</span>
                       <span>{formatDate(item.published_at)}</span>
                     </div>
-                    <h4 className="text-sm font-bold text-slate-900 leading-snug">
+                    <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
                       {item.title}
                     </h4>
-                    <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">
                       {item.content}
                     </p>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-slate-500 text-center py-4">
+              <p className="text-xs text-slate-500 dark:text-slate-400 text-center py-4">
                 No new notices posted at this moment.
               </p>
             )}
 
-            <div className="pt-2 border-t border-slate-100">
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
               <Link href="/announcements" className="w-full">
-                <Button variant="ghost" size="sm" className="w-full text-xs text-primary justify-between">
+                <Button variant="ghost" size="sm" className="w-full text-xs text-primary dark:text-blue-400 justify-between">
                   <span>View All Public Notices</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Button>
