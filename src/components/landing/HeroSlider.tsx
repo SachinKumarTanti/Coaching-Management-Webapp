@@ -74,21 +74,43 @@ const slides: SlideData[] = [
   },
 ];
 
+// Transition duration in ms — keep in sync with the CSS duration below
+const TRANSITION_MS = 500;
+
 export function HeroSlider() {
   const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [displayedSlide, setDisplayedSlide] = React.useState(0);
+  const [isTransitioning, setIsTransitioning] = React.useState(false);
   const [isPaused, setIsPaused] = React.useState(false);
   const [touchStart, setTouchStart] = React.useState<number | null>(null);
   const [touchEnd, setTouchEnd] = React.useState<number | null>(null);
+  const transitionLock = React.useRef(false);
 
   const totalSlides = slides.length;
 
+  const goToSlide = React.useCallback((next: number) => {
+    if (transitionLock.current) return;
+    transitionLock.current = true;
+
+    // 1. Fade out
+    setIsTransitioning(true);
+
+    // 2. After fade-out completes, swap content and fade back in
+    setTimeout(() => {
+      setDisplayedSlide(next);
+      setCurrentSlide(next);
+      setIsTransitioning(false);
+      transitionLock.current = false;
+    }, TRANSITION_MS);
+  }, []);
+
   const nextSlide = React.useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % totalSlides);
-  }, [totalSlides]);
+    goToSlide((currentSlide + 1) % totalSlides);
+  }, [currentSlide, totalSlides, goToSlide]);
 
   const prevSlide = React.useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-  }, [totalSlides]);
+    goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
+  }, [currentSlide, totalSlides, goToSlide]);
 
   // Auto-play interval
   React.useEffect(() => {
@@ -124,7 +146,7 @@ export function HeroSlider() {
     setTouchEnd(null);
   };
 
-  const current = slides[currentSlide];
+  const current = slides[displayedSlide];
   const BadgeIcon = current.badgeIcon;
   const PrimaryIcon = current.primaryCta.icon;
   const SecondaryIcon = current.secondaryCta.icon;
@@ -145,7 +167,15 @@ export function HeroSlider() {
 
       {/* Main Slide Content Area */}
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* Fixed min-height keeps all slides the same height; fade transition on content swap */}
+        <div
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[480px] sm:min-h-[520px] lg:min-h-[480px]"
+          style={{
+            opacity: isTransitioning ? 0 : 1,
+            transform: isTransitioning ? "translateY(8px)" : "translateY(0px)",
+            transition: `opacity ${TRANSITION_MS}ms ease-in-out, transform ${TRANSITION_MS}ms ease-in-out`,
+          }}
+        >
           {/* Left Column: Text & Call to Actions */}
           <div className="lg:col-span-7 text-center lg:text-left space-y-5">
             {/* Slide Badge */}
@@ -349,7 +379,7 @@ export function HeroSlider() {
             {slides.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentSlide(index)}
+                onClick={() => goToSlide(index)}
                 className={`h-2.5 rounded-full transition-all duration-300 ${
                   currentSlide === index
                     ? "w-8 bg-accent"
